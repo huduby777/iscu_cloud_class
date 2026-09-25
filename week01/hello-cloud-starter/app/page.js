@@ -143,8 +143,9 @@ export default function Home() {
         <aside className="practice-note">
           <span aria-hidden="true">✓</span>
           <p>
-  이번 주에는 <code>Route Handler</code>를 만들고 Backend API와
-  연결합니다.
+  3wk. <code>Route Handler</code>를 만들고 Backend API와
+  연결합니다. 
+  4wk. <code>Neon DB</code>를 만들고 연결해서 short_code, original_url을 저장합니다.
           </p>
         </aside>
       </section>
