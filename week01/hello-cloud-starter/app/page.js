@@ -144,7 +144,9 @@ export default function Home() {
           <span aria-hidden="true">✓</span>
           <p>
   3wk. <code>Route Handler</code>를 만들고 Backend API와
-  연결합니다. 
+  연결합니다. </p>
+          <span aria-hidden="true">✓</span>
+          <p>  
   4wk. <code>Neon DB</code>를 만들고 연결해서 short_code, original_url을 저장합니다.
           </p>
         </aside>
