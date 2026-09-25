@@ -1,6 +1,13 @@
 import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
 
+/*
+4주차 DB 연결하기
+*/
+import { saveUrl } from "../../../lib/db";
+
+
+
 export const runtime = "nodejs";
 
 const MAX_URL_LENGTH = 2048;
@@ -29,9 +36,9 @@ function createShortCode(originalUrl, length = 6) {
 
     code += ALPHABET[value % ALPHABET.length];
   }
-
   return code;
 }
+
 
 /*
  * POST()
@@ -156,14 +163,16 @@ export async function POST(request) {
     }
 
 
-    /*
+    /* 4주차 수정
      * 6. Short URL 생성
      *
      * 모든 검사를 통과했으므로
      * shortCode와 shortUrl을 생성합니다.
      */
     const shortCode = createShortCode(originalUrl);
+    await saveUrl(shortCode, originalUrl);
     const baseUrl = new URL(request.url).origin;
+
 
 
     /*
