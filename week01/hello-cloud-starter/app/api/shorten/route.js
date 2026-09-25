@@ -6,8 +6,6 @@ import { NextResponse } from "next/server";
 */
 import { saveUrl } from "../../../lib/db";
 
-
-
 export const runtime = "nodejs";
 
 const MAX_URL_LENGTH = 2048;
@@ -38,7 +36,6 @@ function createShortCode(originalUrl, length = 6) {
   }
   return code;
 }
-
 
 /*
  * POST()
@@ -163,6 +160,8 @@ export async function POST(request) {
     }
 
 
+
+    /*
     /* 4주차 수정
      * 6. Short URL 생성
      *
@@ -172,8 +171,6 @@ export async function POST(request) {
     const shortCode = createShortCode(originalUrl);
     await saveUrl(shortCode, originalUrl);
     const baseUrl = new URL(request.url).origin;
-
-
 
     /*
      * URL 생성 성공
