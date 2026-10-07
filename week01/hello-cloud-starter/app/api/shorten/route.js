@@ -159,8 +159,6 @@ export async function POST(request) {
       );
     }
 
-
-
     /*
     /* 4주차 수정
      * 6. Short URL 생성
