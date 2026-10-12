@@ -199,8 +199,8 @@ export async function POST(request) {
       {
         error: {
           code: "INTERNAL_ERROR",
-          // message: "Failed to create short URL.",
-          message : error.message || "단축 URL 생성에 실패했습니다.",
+          message: "Failed to create short URL.",
+          // message : error.message || "단축 URL 생성에 실패했습니다.",
         },
       },
       { status: 500 }
