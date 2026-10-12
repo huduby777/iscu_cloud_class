@@ -66,9 +66,14 @@ export default function Home() {
       });
 
       const data = await response.json();
-      
+
+      console.log("응답 상태:", response.status);
+      console.log("전체 응답:", data);
+      console.log("오류 내용:", data.error);
+
+
       if(!response.ok){
-        setError(data.error?.messate || "요청 처리에 실패했습니다.");
+        setError(data.error?.message || "요청 처리에 실패했습니다.");
         return;
       }
       setResult(data.shortUrl);
@@ -143,12 +148,7 @@ export default function Home() {
         <aside className="practice-note">
           <span aria-hidden="true">✓</span>
           <p>
-  3wk. <code>Route Handler</code>를 만들고 Backend API와
-  연결합니다. </p>
-          <span aria-hidden="true">✓</span>
-          <p>  
-  4wk. <code>Neon DB</code>를 만들고 연결해서 short_code, original_url을 저장합니다.
-          </p>
+  7wk. <code>인증,인가</code></p>
         </aside>
       </section>
     </main>

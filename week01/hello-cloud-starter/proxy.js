@@ -10,7 +10,7 @@ function authenticationRequiredResponse() {
   return new NextResponse("Authentication required", {
     status: 401,
     headers: {
-      "WWW-Authenticate": 'Basic realm="Admin"',
+      "WWW-Authenticate": 'Basic realm="Admin"', // 인증 정보가 없을 경우, 브라우저는 이 응답을 이용해 Basic Authentication입력 창을 표시
       "Cache-Control": "no-store",
     },
   });
@@ -29,7 +29,7 @@ export function proxy(request) {
   const user = authenticate(request);
 
   if (!user) {
-    return authenticationRequiredResponse();
+    return authenticationRequiredResponse();  
   }
 
   if (!authorize(user, "admin:page")) {
