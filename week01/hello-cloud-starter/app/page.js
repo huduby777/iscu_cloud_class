@@ -72,7 +72,7 @@ export default function Home() {
       // console.log("오류 내용:", data.error);
 
       if(!response.ok){
-        setError(data.error? "[" + response.status + "]" + data.error.message || "요청 처리에 실패했습니다.");
+        setError("[" + response.status + "] " + (data.error?.message || "요청 처리에 실패했습니다."));
         return;
       }
       setResult(data.shortUrl);
