@@ -65,11 +65,8 @@ export default function Home() {
         }),
       });
 
-      console.log("응답 상태:", response.status);
-      console.log("전체 응답:", data);
-      console.log("오류 내용:", data.error);
-
       const data = await response.json();
+
 
       if(!response.ok){
         setError("[ " + response.status + " ] " + (data.error?.message || "요청 처리에 실패했습니다."));

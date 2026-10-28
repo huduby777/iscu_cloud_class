@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 4주차 DB 연결하기
 */
 import { saveUrl } from "../../../lib/db";
+import { existShortCode } from "../../../lib/db";
 
 export const runtime = "nodejs";
 
@@ -79,7 +80,8 @@ export async function POST(request) {
       );
     }
 
-
+    
+    console.log("너무 긴 URL검사");  
     /*
      * 3. URL이 너무 긴 경우
      *
@@ -110,7 +112,8 @@ export async function POST(request) {
      * 올바른 URL 형식인지 검사합니다.
      */
     let parsedUrl;
-
+    
+    console.log("URL 형식 검사");  
     try {
       parsedUrl = new URL(originalUrl);
     } catch {
@@ -139,6 +142,8 @@ export async function POST(request) {
      *
      * http 또는 https만 허용합니다.
      */
+
+    console.log("http 또는 https만 허용");     
     if (!["http:", "https:"].includes(parsedUrl.protocol)) {
       /*
        * 허용하지 않는 URL을 보낸 경우
@@ -164,6 +169,8 @@ export async function POST(request) {
     // 현재 API 요청을 받은 서비스의 호스트 이름
     const serviceHostname = new URL(request.url).hostname;
     // 자기 서비스 주소이면 단축 거부
+    
+    console.log("자기 주소 단축 거부"); 
     if (inputHostname === serviceHostname) {
       return NextResponse.json(
         {
@@ -175,7 +182,6 @@ export async function POST(request) {
         { status: 400 }
       );
     }
-
     /*
     /* 4주차 수정
      * 6. Short URL 생성
@@ -184,13 +190,15 @@ export async function POST(request) {
      * shortCode와 shortUrl을 생성합니다.
      */
     // 기존에 해당 url에 대한 shortcode가 존재하는지 확인
-    const shortCode = await existShortCode(originalUrl);
-
+    let shortCode = "";
+    console.log("db 존재 여부 검색");
+    shortCode = await existShortCode(originalUrl);
     // 이미 생성된 shortcode가 없다면 shortcode 생성하기
     if(shortCode == null)   {
-      const shortCode = await createShortCode(originalUrl);
+      console.log("이미 생성된 shortcode가 없으므로 shortURL 생성 후 저장");
+      shortCode = await createShortCode(originalUrl);
+      await saveUrl(shortCode, originalUrl);
     }
-    await saveUrl(shortCode, originalUrl);
     const baseUrl = new URL(request.url).origin;      
 
     /*
@@ -208,7 +216,7 @@ export async function POST(request) {
       { status: 201 }
     );
 
-  } catch {
+  } catch(error) {
 
     /*
      * 7. 서버 내부 오류
@@ -218,6 +226,9 @@ export async function POST(request) {
      * TODO:
      * 적절한 HTTP status code로 수정하세요.
      */
+
+    console.log(error); 
+
     return NextResponse.json(
       {
         error: {
