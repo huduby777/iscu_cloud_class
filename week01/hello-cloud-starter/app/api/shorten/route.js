@@ -140,7 +140,6 @@ export async function POST(request) {
      * http 또는 https만 허용합니다.
      */
     if (!["http:", "https:"].includes(parsedUrl.protocol)) {
-
       /*
        * 허용하지 않는 URL을 보낸 경우
        *
@@ -159,6 +158,24 @@ export async function POST(request) {
       );
     }
 
+    // 자기 서비스 URL 차단
+    // 사용자가 입력한 원본 URL의 호스트 이름
+    const inputHostname = new URL(originalUrl).hostname;
+    // 현재 API 요청을 받은 서비스의 호스트 이름
+    const serviceHostname = new URL(request.url).hostname;
+    // 자기 서비스 주소이면 단축 거부
+    if (inputHostname === serviceHostname) {
+      return NextResponse.json(
+        {
+          error: {
+            code: "SELF_URL",
+            message: "Cannot shorten this service's own URLs",
+          },
+        },
+        { status: 400 }
+      );
+    }
+
     /*
     /* 4주차 수정
      * 6. Short URL 생성
@@ -166,9 +183,15 @@ export async function POST(request) {
      * 모든 검사를 통과했으므로
      * shortCode와 shortUrl을 생성합니다.
      */
-    const shortCode = createShortCode(originalUrl);
+    // 기존에 해당 url에 대한 shortcode가 존재하는지 확인
+    const shortCode = await existShortCode(originalUrl);
+
+    // 이미 생성된 shortcode가 없다면 shortcode 생성하기
+    if(shortCode == null)   {
+      const shortCode = await createShortCode(originalUrl);
+    }
     await saveUrl(shortCode, originalUrl);
-    const baseUrl = new URL(request.url).origin;
+    const baseUrl = new URL(request.url).origin;      
 
     /*
      * URL 생성 성공

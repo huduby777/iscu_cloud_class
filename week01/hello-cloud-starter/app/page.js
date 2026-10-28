@@ -65,16 +65,17 @@ export default function Home() {
         }),
       });
 
+      console.log("응답 상태:", response.status);
+      console.log("전체 응답:", data);
+      console.log("오류 내용:", data.error);
+
       const data = await response.json();
 
-      // console.log("응답 상태:", response.status);
-      // console.log("전체 응답:", data);
-      // console.log("오류 내용:", data.error);
-
       if(!response.ok){
-        setError("[" + response.status + "] " + (data.error?.message || "요청 처리에 실패했습니다."));
+        setError("[ " + response.status + " ] " + (data.error?.message || "요청 처리에 실패했습니다."));
         return;
       }
+
       setResult(data.shortUrl);
     } catch {
       setError("서버에 연결할 수 없습니다.");
@@ -143,12 +144,6 @@ export default function Home() {
             )}
           </div>
         </form>
-
-        <aside className="practice-note">
-          <span aria-hidden="true">✓</span>
-          <p>
-  7wk. <code>인증,인가</code></p>
-        </aside>
       </section>
     </main>
   );
